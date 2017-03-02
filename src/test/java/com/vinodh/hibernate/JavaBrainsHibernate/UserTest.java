@@ -35,6 +35,13 @@ public class UserTest {
 		frnds.add("#@$#@");
 		details.setFriends(frnds);
 		
+		List<String> enms= new ArrayList<String>();
+		enms.add("abc");
+		enms.add("123");
+		enms.add("#@$#@");
+		details.setEnemies(enms);
+		
+		
 		UserDetails details2 = new UserDetails();
 		// details.setId(1);
 		details2.setName("Vinodh");
@@ -57,6 +64,12 @@ public class UserTest {
 		frnds2.add("#@$#@");
 		details2.setFriends(frnds2);
 		
+		List<String> enms2= new ArrayList<String>();
+		enms2.add("abc");
+		enms2.add("123");
+		enms2.add("#@$#@");
+		details2.setEnemies(enms2);
+		
 		
 		SessionFactory factory = new Configuration().configure("hibernate.cfg.xml").buildSessionFactory();
 		System.out.println("session opened");
@@ -66,11 +79,15 @@ public class UserTest {
 		session.save(details2);
 		session.getTransaction().commit();
 		session.close();
-		/*
-		 * System.out.println("session closed"); session =
-		 * factory.openSession(); session.beginTransaction(); UserDetails
-		 * userDetails = (UserDetails) session.get(UserDetails.class, 1);
-		 * System.out.println(userDetails.getId());
-		 */ }
+		
+		  System.out.println("session closed"); session =
+		  factory.openSession(); session.beginTransaction(); UserDetails
+		// this won't fetch the dependent data like List of Friends, default LAZY loading of Hibernate
+		  userDetails = (UserDetails) session.get(UserDetails.class, 10);
+		  //session.close();
+		  // this will fetch friends using proxy classes which will be subclass of Userdetails class
+		  System.out.println(userDetails.getFriends());
+// to get values even after session close, change fetch type to EAGER
+	}
 
 }

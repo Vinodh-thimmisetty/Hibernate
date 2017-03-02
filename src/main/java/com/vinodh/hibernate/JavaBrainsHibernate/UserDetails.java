@@ -9,28 +9,29 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.Lob;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import org.hibernate.annotations.CollectionId;
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
 @Entity(name = "USER_DETAILS")
 @Table(name = "EMPLOYEE", schema = "VINODH")
 public class UserDetails {
 	@Id // surrogate key, no business use, hibernate can generate this
-	@Column(name = "EMP_ID")
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@Column(name = "EMP_ID") // column name
+	@GeneratedValue(strategy = GenerationType.SEQUENCE) // default generated hibernate sequence
 	private int id;
 	/*
 	 * @Id // natural key, which can bde used for authentication
@@ -39,31 +40,46 @@ public class UserDetails {
 	 */@Column(name = "EMP_NAME")
 	private String name;
 	@Basic(fetch = FetchType.EAGER, optional = true)
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.DATE) // TO format the DATE
 	@Column(name = "DOB")
 	private Date dateOfBirth;
-	@Transient
+	@Transient // to not save in DB
 	private String iDontSaveinDB;
-	@Lob
+	@Lob // For extra large size values
 	private String description;
 
 	// Embedding Objects
 	// use @EmbeddedId to use primary key as OBJECT
- 	@Embedded
+	@Embedded // To make relationships
 	private Address address;
 	// override emebedded objects
 	@Embedded
-	@AttributeOverrides(
-			{
-				@AttributeOverride(name = "street", column = @Column(name = "HOME_STREET")),
-				@AttributeOverride(name = "city", column = @Column(name = "HOME_CITY")) 
-			})
+	@AttributeOverrides({ @AttributeOverride(name = "street", column = @Column(name = "HOME_STREET")),
+			@AttributeOverride(name = "city", column = @Column(name = "HOME_CITY")) })
 	private Address homeAddress;
 
-	@ElementCollection 
+	@ElementCollection // TO enable Collection Datatype
+	@JoinTable(name = "EMPLOYEE_FRIENDS",
+	joinColumns=@JoinColumn(name="EMP_ID")
+	) // to change the join table configurations
 	private List<String> friends;
-	
-	
+
+	@ElementCollection(fetch=FetchType.EAGER)
+	@JoinTable(name = "EMPLOYEE_ENEMIES",
+	joinColumns=@JoinColumn(name="EMP_NUM")
+	) // to change the join table configurations
+ 	@GenericGenerator(strategy="hilo",name="hilo-gen")
+	// TO create new Column like index using hilo generator :: similar to ROWNUM
+	@CollectionId(columns = { @Column(name="COUNT") }, generator = "hilo-gen", type = @Type(type="long"))
+	 private List<String> enemies;
+ 	public List<String> getEnemies() {
+		return enemies;
+	}
+
+	public void setEnemies(List<String> enemies) {
+		this.enemies = enemies;
+	}
+
 	public List<String> getFriends() {
 		return friends;
 	}
