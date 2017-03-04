@@ -3,6 +3,7 @@ package com.vinodh.hibernate.JavaBrainsHibernate;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -38,9 +39,10 @@ public class UserInfo {
 		return vehicle;
 	}
 
-	// One-Many mapping with Friends with Foreign Keys
+	// One-Many mapping with Friends with Foreign Keys, Cascade will make sure all its dependencies also saved.
+	 //@OneToMany(mappedBy="info",cascade=CascadeType.PERSIST)
 	@OneToMany(mappedBy="info")
-// TO create new Table for Mapping ::	@JoinTable(name="USER_VEHICLE",joinColumns=@JoinColumn(name="USER_ID"), inverseJoinColumns=@JoinColumn(name ="FRIEND_ID"))
+	// TO create new Table for Mapping ::	@JoinTable(name="USER_VEHICLE",joinColumns=@JoinColumn(name="USER_ID"), inverseJoinColumns=@JoinColumn(name ="FRIEND_ID"))
 	private Collection<Friends> friends;
  
 	public Collection<Friends> getFriends() {

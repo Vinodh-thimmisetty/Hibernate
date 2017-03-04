@@ -49,6 +49,8 @@ public class UserInfoTest {
 		Session session = factory.openSession();
 		session.beginTransaction();
 		session.save(userInfo);
+		// To make CASCADE works on save
+		// session.persist(userInfo);
 		session.save(vehicle);
 		session.save(friends);
 		session.save(friends2); 
