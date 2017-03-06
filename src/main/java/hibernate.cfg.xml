@@ -14,13 +14,25 @@
 		<property name="connection.username">VINODH</property>
 		<property name="connection.password">vinodh</property>
 		<property name="show_sql">true</property>
-		<!-- create/update  -->
-		<property name="hbm2ddl.auto">create</property>
+		<!-- create/update -->
+		<property name="hbm2ddl.auto">update</property>
 		<property name="default_schema">VINODH</property>
 		<property name="dialect">org.hibernate.dialect.Oracle10gDialect</property>
-
+		<!-- Caching :: First Level cache is enabled by Default which is in SESSION scope and has org.hibernate.cacheNoCacheProvider property-->
+		<property name="cache.provider_class">org.hibernate.cache.EhCacheProvider</property>
+		<property name="cache.use_second_level_cache">true</property>
+		<property name="cache.use_query_level_cache">true</property>
 		<!-- Annotated Entity Classes -->
 		<mapping class="com.vinodh.hibernate.JavaBrainsHibernate.UserDetails" />
+		<mapping class="com.vinodh.hibernate.JavaBrainsHibernate.UserInfo" />
+		<mapping class="com.vinodh.hibernate.JavaBrainsHibernate.Vehicle" />
+		<mapping class="com.vinodh.hibernate.JavaBrainsHibernate.Friends" />
+		<mapping class="com.vinodh.hibernate.JavaBrainsHibernate.GirlFriends" />
+		<mapping class="com.vinodh.hibernate.JavaBrainsHibernate.ProjectVinodh" />
+		<mapping class="com.vinodh.hibernate.JavaBrainsHibernate.Developer" />
+		<mapping class="com.vinodh.hibernate.JavaBrainsHibernate.Tester" />
+		<mapping class="com.vinodh.hibernate.JavaBrainsHibernate.CRUDOperations" />
+		<mapping class="com.vinodh.hibernate.JavaBrainsHibernate.HQLTable" />
 	</session-factory>
 
 </hibernate-configuration>
