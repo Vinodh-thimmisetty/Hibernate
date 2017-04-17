@@ -12,7 +12,7 @@ import com.vinodh.hibernate.JavaBrainsHibernate.UserDetails;
 
 public class JPAExample {
 public static void main(String[] args) {
-	EntityManagerFactory entityManagerFactory =  new PersistenceProvider. Persistence.createEntityManagerFactory("Eclipselink_JPA");
+	EntityManagerFactory entityManagerFactory =  Persistence.createEntityManagerFactory("Eclipselink_JPA");
 	EntityManager entityManager = entityManagerFactory.createEntityManager();
 	
 	entityManager.getTransaction().begin();
